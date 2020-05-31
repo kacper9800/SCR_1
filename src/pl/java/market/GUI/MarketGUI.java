@@ -134,6 +134,34 @@ public class MarketGUI extends JFrame {
                 }
             }
         });
+
+        // Nasłuch zmiany stanu spinnera
+
+        pineapplesSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+
+
+            }
+        });
+        bananasSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+
+            }
+        });
+        grapeSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+
+            }
+        });
+        watermelonSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+
+            }
+        });
     }
 
 
