@@ -1,5 +1,7 @@
 package pl.java.market.common;
 
+import pl.java.market.GUI.MarketGUI;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 

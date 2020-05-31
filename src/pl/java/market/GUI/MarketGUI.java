@@ -3,20 +3,20 @@ package pl.java.market.GUI;
 import pl.java.market.Market;
 import pl.java.market.MarketItem;
 import pl.java.market.ProducerManager;
+import pl.java.market.common.Consumer;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.util.EnumMap;
+import java.util.Map;
 
 public class MarketGUI extends JFrame {
     public JPanel mainPanel;
-
+    public JPanel buttonsPanel;
+    public JPanel imagePanel;
     // Declarations of buttons to buy fruit
 
     private JButton bananaButton;
@@ -37,6 +37,7 @@ public class MarketGUI extends JFrame {
     private JTextField pineapplesAmountTextField;
     private JTextField watermelonsAmountTextField;
 
+
     // Amount of fruits
     private Integer amountOfBanas;
     private Integer amountOfGrapes;
@@ -44,304 +45,117 @@ public class MarketGUI extends JFrame {
     private Integer amountOfWatermelons;
 
     // Amount of fruits to buy
-    private Integer ananasToBuy;
-    private Integer banasToBuy;
+    private Integer bananasToBuy;
     private Integer grapesToBuy;
+    private Integer pineapplesToBuy;
     private Integer watermelonsToBuy;
-
-
-    public BufferedImage loadImage() {
-        try {
-            return ImageIO.read(new File("./img/market_empty.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            return null;
-        }
-    }
-
-    public void initComponents() {
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGap(0, 400, Short.MAX_VALUE)
-        );
-
-        layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addGap(0, 300, Short.MAX_VALUE)
-        );
-        pack();
-    }
 
     public MarketGUI(String title) {
         super(title);
 
+
         ProducerManager producerManager = new ProducerManager();
-        Market market = new Market(producerManager);
+        Market market = new Market(producerManager, this);
         market.openMarket();
+
+        setBananasAmountTextField(0);
+        setGrapesAmountTextField(0);
+        setPineapplesAmountTextField(0);
+        setWatermelonsAmountTextField(0);
+
+//        JLabel jLabel = new JLabel();
+//        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/img/market_empty.png"));
+//        jLabel.setIcon(imageIcon);
+//        imagePanel.add(jLabel);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
         this.pack();
 
         // Zakup przedmiotów
-
-
         bananaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    market.consumeMarketItem(MarketItem.BANANA);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
+                Map<MarketItem, Integer> groceriesMap = new EnumMap<>(MarketItem.class);
+                groceriesMap.put(MarketItem.BANANA, bananasToBuy);
+                Consumer consumer = new Consumer(market, groceriesMap);
+                consumer.start();
             }
         });
-
 
         grapeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    market.consumeMarketItem(MarketItem.GRAPE);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
+                Map<MarketItem, Integer> groceriesMap = new EnumMap<>(MarketItem.class);
+                groceriesMap.put(MarketItem.GRAPE, grapesToBuy);
+                Consumer consumer = new Consumer(market, groceriesMap);
+                consumer.start();
             }
         });
 
         pineappleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    market.consumeMarketItem(MarketItem.PINEAPPLE);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-
+                Map<MarketItem, Integer> groceriesMap = new EnumMap<>(MarketItem.class);
+                groceriesMap.put(MarketItem.PINEAPPLE, pineapplesToBuy);
+                Consumer consumer = new Consumer(market, groceriesMap);
+                consumer.start();
             }
         });
+
         watermelonButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    market.consumeMarketItem(MarketItem.WATERMELON);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
+                Map<MarketItem, Integer> groceriesMap = new EnumMap<>(MarketItem.class);
+                groceriesMap.put(MarketItem.WATERMELON, watermelonsToBuy);
+                Consumer consumer = new Consumer(market, groceriesMap);
+                consumer.start();
             }
         });
 
-        // Nasłuch zmiany stanu spinnera
+        // Nasłuchy zmiany stanu spinnera
+        bananasSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                bananasToBuy = (Integer) bananasSpinner.getValue();
+            }
+        });
+
+        grapeSpinner.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                grapesToBuy = (Integer) grapeSpinner.getValue();
+            }
+        });
 
         pineapplesSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-
-
+                pineapplesToBuy = (Integer) pineapplesSpinner.getValue();
             }
         });
-        bananasSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
 
-            }
-        });
-        grapeSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-
-            }
-        });
         watermelonSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-
+                watermelonsToBuy = (Integer) watermelonSpinner.getValue();
             }
         });
     }
 
+    public void setBananasAmountTextField(Integer amountOfBananas) {
+        bananasAmountTextField.setText("Available bananas: " + amountOfBananas);
+    }
 
-//
-//    public MarketGUI(String title) throws HeadlessException {
-//        super();
-//        try {
-//            BufferedImage backgroundImg = ImageIO.read(new File("./img/market_empty.png"));
-//
-//            JFrame frame = new JFrame(title);
-//
-//            frame.setContentPane(new JLabel(new ImageIcon(backgroundImg)));
-//            frame.setLayout(new GridBagLayout());
-//            GridBagConstraints gbc = new GridBagConstraints();
-//            gbc.gridwidth = GridBagConstraints.REMAINDER;
-//
-//            frame.add(new JButton("Buy Bananas"), gbc);
-//
-//            ProducerManager producerManager = new ProducerManager();
-//
-//            Market market = new Market(producerManager);
-//            // Market zostaje otwarty - magazyn zostaje uzupelniany
-//            market.openMarket();
-//
-//
-//            frame.pack();
-//            frame.setLocationRelativeTo(null);
-//            frame.setVisible(true);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        ananasButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.out.println(ananasSpinner.getValue());
-//
-//            }
-//        });
-//        bananaButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//            }
-//        });
-//        grapeButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//            }
-//        });
-//        mainPanel.addComponentListener(new ComponentAdapter() {
-//        });
-//        watermelonButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//            }
-//        });
-//        ananasSpinner.addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                super.componentResized(e);
-//            }
-//
-//            @Override
-//            public void componentMoved(ComponentEvent e) {
-//                super.componentMoved(e);
-//            }
-//
-//            @Override
-//            public void componentShown(ComponentEvent e) {
-//                super.componentShown(e);
-//            }
-//
-//            @Override
-//            public void componentHidden(ComponentEvent e) {
-//                super.componentHidden(e);
-//            }
-//        });
-//        ananasButton.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//            }
-//        });
-//        ananasSpinner.addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                super.componentResized(e);
-//            }
-//
-//            @Override
-//            public void componentMoved(ComponentEvent e) {
-//                super.componentMoved(e);
-//            }
-//
-//            @Override
-//            public void componentShown(ComponentEvent e) {
-//                super.componentShown(e);
-//            }
-//
-//            @Override
-//            public void componentHidden(ComponentEvent e) {
-//                super.componentHidden(e);
-//            }
-//        });
-//        bananasSpinner.addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                super.componentResized(e);
-//            }
-//
-//            @Override
-//            public void componentMoved(ComponentEvent e) {
-//                super.componentMoved(e);
-//            }
-//
-//            @Override
-//            public void componentShown(ComponentEvent e) {
-//                super.componentShown(e);
-//            }
-//
-//            @Override
-//            public void componentHidden(ComponentEvent e) {
-//                super.componentHidden(e);
-//            }
-//        });
-//        grapeSpinner.addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//                super.componentResized(e);
-//            }
-//
-//            @Override
-//            public void componentMoved(ComponentEvent e) {
-//                super.componentMoved(e);
-//            }
-//
-//            @Override
-//            public void componentShown(ComponentEvent e) {
-//                super.componentShown(e);
-//            }
-//
-//            @Override
-//            public void componentHidden(ComponentEvent e) {
-//                super.componentHidden(e);
-//            }
-//        });
-//        watermelonSpinner.addComponentListener(new ComponentAdapter() {
-//            @Override
-//            public void componentResized(ComponentEvent e) {
-//            }
-//
-//            @Override
-//            public void componentMoved(ComponentEvent e) {
-//                super.componentMoved(e);
-//            }
-//
-//            @Override
-//            public void componentShown(ComponentEvent e) {
-//                super.componentShown(e);
-//            }
-//
-//            @Override
-//            public void componentHidden(ComponentEvent e) {
-//                super.componentHidden(e);
-//            }
-//        });
-//        watermelonSpinner.addChangeListener(new ChangeListener() {
-//            @Override
-//            public void stateChanged(ChangeEvent e) {
-//                System.out.println(e);
-//            }
-//        });
-//    }
+    public void setGrapesAmountTextField(Integer amountOfGrapes) {
+        grapesAmountTextField.setText("Available grapes: " + amountOfGrapes);
+    }
 
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+    public void setPineapplesAmountTextField(Integer amountOfPineapples) {
+        pineapplesAmountTextField.setText("Available pineapples: " + amountOfPineapples);
+    }
+
+    public void setWatermelonsAmountTextField(Integer amountOfWatermelons) {
+        watermelonsAmountTextField.setText("Available watermelons: " + amountOfWatermelons);
     }
 }

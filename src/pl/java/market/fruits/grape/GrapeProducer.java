@@ -8,7 +8,7 @@ import pl.java.market.common.Producer;
 public class GrapeProducer extends Producer<Grape> {
 
     private static final int MAX_STORAGE = 15;
-    // Produce one element every 2 seconds
+    // Produce one element every 10 seconds
     private static final long PRODUCE_TIME = 10000;
 
     @Override

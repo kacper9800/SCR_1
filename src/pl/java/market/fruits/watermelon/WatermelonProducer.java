@@ -8,7 +8,7 @@ import pl.java.market.common.Producer;
 public class WatermelonProducer extends Producer<Watermelon> {
 
     private static final int MAX_STORAGE = 12;
-    // Produce one element every 2 seconds
+    // Produce one element every 10 seconds
     private static final long PRODUCE_TIME = 10000;
 
     @Override

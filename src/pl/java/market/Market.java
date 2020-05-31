@@ -1,5 +1,6 @@
 package pl.java.market;
 
+import pl.java.market.GUI.MarketGUI;
 import pl.java.market.common.Consumer;
 import pl.java.market.common.Item;
 
@@ -59,8 +60,11 @@ public class Market {
 
     private ProducerManager producerManager;
 
-    public Market(ProducerManager producerManager) {
+    private MarketGUI marketGUI;
+
+    public Market(ProducerManager producerManager, MarketGUI marketGUI) {
         this.producerManager = producerManager;
+        this.marketGUI = marketGUI;
     }
 
     /**
@@ -94,15 +98,18 @@ public class Market {
                     Item item = producerManager.getProducer(marketItem).consumeItem();
                     storage.put(item);
                     System.out.println("Add item: " + item.getName() + " to market storage: " + storage.size());
+                    informCustomers(marketItem, storage.size());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
             itemToInitFillUpMap.replace(marketItem, true);
+            informCustomers(marketItem, storage.size());
             System.out.println("Item: " + marketItem + " successful filled up");
         };
         new Thread(fillUpMarketStorage).start();
     }
+
 
     /**
      * Zwraca wybrany "item" z marketu,
@@ -115,6 +122,7 @@ public class Market {
         fillUpStorageIfLow(marketItem);
         BlockingQueue<Item> storage = itemToStorageMap.get(marketItem);
         Item item = storage.take();
+        informCustomers(marketItem, storage.size());
         System.out.println("Consumer consumed market item: " + item.getName() + " storage size: " + storage.size());
         return item;
     }
@@ -132,10 +140,28 @@ public class Market {
             itemToInitFillUpMap.replace(marketItem, false);
             // Add half max storage
             fillUpMarketStorage(marketItem, maxStorage / 2);
+            informCustomers(marketItem, storage.size());
         }
     }
 
     public void closeMarket() {
         marketCloseFlag = true;
+    }
+
+    private void informCustomers(MarketItem marketItem, int size) {
+        switch (marketItem) {
+            case GRAPE:
+                this.marketGUI.setGrapesAmountTextField(size);
+                break;
+            case BANANA:
+                this.marketGUI.setBananasAmountTextField(size);
+                break;
+            case WATERMELON:
+                this.marketGUI.setWatermelonsAmountTextField(size);
+                break;
+            case PINEAPPLE:
+                this.marketGUI.setPineapplesAmountTextField(size);
+                break;
+        }
     }
 }
