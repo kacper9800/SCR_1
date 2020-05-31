@@ -15,15 +15,15 @@ public class TestMain {
         // Market zostaje otwarty - magazyn zostaje uzupelniany
         market.openMarket();
 
-        // Zakup 2x Apple i 2x Carrot
+        // Zakup 2x Grape i 2x Carrot
         Map<MarketItem, Integer> consumer1GroceryMap = new EnumMap<>(MarketItem.class);
-        consumer1GroceryMap.put(MarketItem.APPLE, 2);
-        consumer1GroceryMap.put(MarketItem.CARROT, 2);
+        consumer1GroceryMap.put(MarketItem.BANANA, 2);
+        consumer1GroceryMap.put(MarketItem.GRAPE, 2);
 
-        // Zakup 4x Apple i 1x Carrot i 5x Banana
+        // Zakup 4x Grape i 1x Carrot i 5x Grape
         Map<MarketItem, Integer> consumer2GroceryMap = new EnumMap<>(MarketItem.class);
-        consumer2GroceryMap.put(MarketItem.APPLE, 4);
-        consumer2GroceryMap.put(MarketItem.CARROT, 1);
+        consumer2GroceryMap.put(MarketItem.GRAPE, 4);
+        consumer2GroceryMap.put(MarketItem.WATERMELON, 1);
         consumer2GroceryMap.put(MarketItem.BANANA, 5);
 
         // Consumer 1 odwiedza sklep i konsumuje elementu z listy zakupów

@@ -18,9 +18,11 @@ public class Market {
     /**
      * Rozmiar magazynu w markecie
      */
-    public static final int CARROT_STORAGE_SIZE = 4;
-    public static final int APPLE_STORAGE_SIZE = 5;
     public static final int BANANA_STORAGE_SIZE = 6;
+    public static final int GRAPE_STORAGE_SIZE = 5;
+    public static final int PINEAPPLE_STORAGE_SIZE = 4;
+    public static final int WATERMELON_STORAGE_SIZE = 3;
+
 
     /**
      * Każdy "item" ma swoją przestrzeń w magazynie
@@ -34,21 +36,25 @@ public class Market {
      */
     private volatile boolean marketCloseFlag = false;
 
-    public static List<MarketItem> marketItems = Arrays.asList(MarketItem.APPLE, MarketItem.CARROT, MarketItem.BANANA);
+    public static List<MarketItem> marketItems = Arrays.asList(MarketItem.BANANA, MarketItem.GRAPE, MarketItem.PINEAPPLE, MarketItem.WATERMELON);
 
     static {
-        // Marchewki
-        itemToStorageSizeMap.put(MarketItem.CARROT, CARROT_STORAGE_SIZE);
-        itemToStorageMap.put(MarketItem.CARROT, new ArrayBlockingQueue<>(CARROT_STORAGE_SIZE));
-        itemToInitFillUpMap.put(MarketItem.CARROT, false);
-        // Jabłka
-        itemToStorageSizeMap.put(MarketItem.APPLE, APPLE_STORAGE_SIZE);
-        itemToStorageMap.put(MarketItem.APPLE, new ArrayBlockingQueue<>(APPLE_STORAGE_SIZE));
-        itemToInitFillUpMap.put(MarketItem.APPLE, false);
-        // Banany
+        // Bananas
         itemToStorageSizeMap.put(MarketItem.BANANA, BANANA_STORAGE_SIZE);
         itemToStorageMap.put(MarketItem.BANANA, new ArrayBlockingQueue<>(BANANA_STORAGE_SIZE));
         itemToInitFillUpMap.put(MarketItem.BANANA, false);
+        // Grapes
+        itemToStorageSizeMap.put(MarketItem.GRAPE, GRAPE_STORAGE_SIZE);
+        itemToStorageMap.put(MarketItem.GRAPE, new ArrayBlockingQueue<>(GRAPE_STORAGE_SIZE));
+        itemToInitFillUpMap.put(MarketItem.GRAPE, false);
+        // Pineapples
+        itemToStorageSizeMap.put(MarketItem.PINEAPPLE, PINEAPPLE_STORAGE_SIZE);
+        itemToStorageMap.put(MarketItem.PINEAPPLE, new ArrayBlockingQueue<>(PINEAPPLE_STORAGE_SIZE));
+        itemToInitFillUpMap.put(MarketItem.PINEAPPLE, false);
+        // Watermelons
+        itemToStorageSizeMap.put(MarketItem.WATERMELON, WATERMELON_STORAGE_SIZE);
+        itemToStorageMap.put(MarketItem.WATERMELON, new ArrayBlockingQueue<>(WATERMELON_STORAGE_SIZE));
+        itemToInitFillUpMap.put(MarketItem.WATERMELON, false);
     }
 
     private ProducerManager producerManager;

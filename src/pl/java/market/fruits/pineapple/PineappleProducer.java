@@ -1,15 +1,15 @@
-package pl.java.market.carrot;
+package pl.java.market.fruits.pineapple;
 
 import pl.java.market.common.Producer;
 
 /**
- * Produkuje 1 marchewkę co 2 sekundy, w magazynie może pomieścić łącznie 12
+ * Produkuje 1 ananasa co 2 sekundy, w magazynie może pomieścić łącznie 12
  */
-public class CarrotProducer extends Producer<Carrot> {
+public class PineappleProducer extends Producer<Pineapple> {
 
     private static final int MAX_STORAGE = 12;
     // Produce one element every 2 seconds
-    private static final long PRODUCE_TIME = 2000;
+    private static final long PRODUCE_TIME = 10000;
 
     @Override
     protected int getMaxStorageSize() {
@@ -22,7 +22,7 @@ public class CarrotProducer extends Producer<Carrot> {
     }
 
     @Override
-    protected Carrot createItem() {
-        return new Carrot();
+    protected Pineapple createItem() {
+        return new Pineapple();
     }
 }

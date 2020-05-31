@@ -1,4 +1,4 @@
-package pl.java.market.banana;
+package pl.java.market.fruits.banana;
 
 import pl.java.market.common.Item;
 
