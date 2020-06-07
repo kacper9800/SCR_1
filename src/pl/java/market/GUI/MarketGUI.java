@@ -16,7 +16,6 @@ import java.util.Map;
 public class MarketGUI extends JFrame {
     public JPanel mainPanel;
     public JPanel buttonsPanel;
-    public JPanel imagePanel;
     // Declarations of buttons to buy fruit
 
     private JButton bananaButton;
@@ -63,6 +62,8 @@ public class MarketGUI extends JFrame {
         setPineapplesAmountTextField(0);
         setWatermelonsAmountTextField(0);
 
+
+        ImageIcon img = new ImageIcon("pl/java/market/img/market_full.png");
 //        JLabel jLabel = new JLabel();
 //        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/img/market_empty.png"));
 //        jLabel.setIcon(imageIcon);
